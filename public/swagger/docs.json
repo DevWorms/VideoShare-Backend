@@ -5,10 +5,11 @@
     "version": "0.0.1",
     "title": "VideoShare WebService"
   },
-  "host": "videoshare.devworms.com",
+  "host": "weshick.com",
   "basePath": "/api",
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "paths": {
     "/login": {
