@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             'size'=>1,
             'ruta'=>"..",
         ]);
+
         Video::create([
             'user_id'=> 1,
             'nombre'=> "adios",
@@ -42,6 +43,7 @@ class DatabaseSeeder extends Seeder
             'size'=>1,
             'ruta'=>"..",
         ]);
+
         Video::create([
             'user_id'=> 5,
             'nombre'=> "si",
@@ -52,6 +54,7 @@ class DatabaseSeeder extends Seeder
             'size'=>1,
             'ruta'=>"..",
         ]);
+
         Video::create([
             'user_id'=> 5,
             'nombre'=> "no",
@@ -62,6 +65,7 @@ class DatabaseSeeder extends Seeder
             'size'=>1,
             'ruta'=>"..",
         ]);
+
         Video::create([
             'user_id'=> 5,
             'nombre'=> "tal vez",
@@ -72,6 +76,7 @@ class DatabaseSeeder extends Seeder
             'size'=>1,
             'ruta'=>"..",
         ]);
+
         Video::create([
             'user_id'=> 5,
             'nombre'=> "quiza",
@@ -83,5 +88,4 @@ class DatabaseSeeder extends Seeder
             'ruta'=>"..",
         ]);
     }
-
 }

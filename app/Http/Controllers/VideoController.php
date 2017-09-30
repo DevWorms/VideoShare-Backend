@@ -20,12 +20,14 @@ class VideoController extends Controller
     private $size;
     private $distance;
     private $distance10Metros;
+    private $timeLimit;
 
     function __construct()
     {
         $this->size = 100000000;
         $this->distance = 5; // 5 kilometros
         $this->distance10Metros = 0.015; // 15 metros
+        $this->timeLimit = 3; // Límite de tiempo de 3 horas
         $this->extensions = [
             // extensiones de video
             "h263", "h264", "mp4", "mov", "m4v",
@@ -131,7 +133,7 @@ class VideoController extends Controller
             $long = $video->long;
 
             $boundaries = $this->getBoundaries($lat, $long, $this->distance10Metros);
-            $horamin = Carbon::now()->subHour(3);
+            $horamin = Carbon::now()->subHour($this->timeLimit);
 
             $allvideo = Video::where('created_at', '>=', $horamin)
                 ->whereBetween('lat', [$boundaries['min_lat'], $boundaries['max_lat']])
@@ -193,7 +195,7 @@ class VideoController extends Controller
 
             $lat = $request->get("lat");
             $long = $request->get("long");
-            $horamin = Carbon::now()->subHour(3);
+            $horamin = Carbon::now()->subHour($this->timeLimit);
 
             if ($lat == null || $long == null) {
                 $videos = Video::where('user_id', '!=', $request->get("id"))
