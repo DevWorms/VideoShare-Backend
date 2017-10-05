@@ -2,18 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\traits\VideoTrait;
 use App\User;
-use App\Video;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Monolog\Processor\UidProcessorTest;
 
 class UserController extends Controller
 {
+    use VideoTrait;
+
+    private $distance10Metros;
+
+    /**
+     * UserController constructor.
+     */
+    public function __construct()
+    {
+        $this->distance10Metros = 0.015; // 15 metros
+    }
+
     public function login(Request $request)
     {
         try {
@@ -89,9 +99,37 @@ class UserController extends Controller
                     'apikey' => $request->get("apikey"),
                 ])->with("videos")->firstOrFail();
 
-                foreach ($user->videos as $video) {
+                $allVideos = collect();
+                $blacklist = [];
+
+                for ($i = 0; $i < count($user->videos); $i++) {
+                    if (!in_array($i, $blacklist)) {
+                        $videoParent = $user->videos->get($i);
+                        $videosCercanos = collect();
+
+                        for ($j = $i + 1; $j < count($user->videos); $j++) {
+                            $distance = ($videoParent["distance"] - $user->videos->get($j)["distance"]);
+
+                            if ($distance < 0) {
+                                $distance = $distance * -1;
+                            }
+
+                            if ($distance <= $this->distance10Metros) {
+                                $videosCercanos->push($user->videos->get($j));
+                                array_push($blacklist, $j);
+                            }
+                        }
+
+                        $videoParent["videosCercanos"] = $videosCercanos->values();
+                        $allVideos->push($videoParent);
+                    }
+                }
+
+                foreach ($allVideos as $video) {
                     $video = $this->returnVideo($video);
                 }
+
+                $user->videos = $allVideos;
 
                 $res ['estado'] = 1;
                 $res ['user'] = $user;
@@ -142,12 +180,5 @@ class UserController extends Controller
             $res['mensaje'] = $error->getMessage();
             return response()->json($res, 500);
         }
-    }
-
-    public function returnVideo(Video $video) {
-        $url = $video->ruta;
-        $video->url = url(Storage::url($url));
-
-        return $video;
     }
 }

@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             'lat'=>19.3929598,
             'long'=>-99.072011,
             'size'=>1,
-            'ruta'=>"..",
+            'ruta'=>"pirate.mp4",
         ]);
 
         Video::create([
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
             'lat'=>19.3933454,
             'long'=>-99.0734997,
             'size'=>1,
-            'ruta'=>"..",
+            'ruta'=>"pirate.mp4",
         ]);
 
         Video::create([
@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
             'lat'=>19.3933454,
             'long'=>-99.0734997,
             'size'=>1,
-            'ruta'=>"..",
+            'ruta'=>"pirate.mp4",
         ]);
 
         Video::create([
@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
             'lat'=>19.3933454,
             'long'=>-99.0734997,
             'size'=>1,
-            'ruta'=>"..",
+            'ruta'=>"pirate.mp4",
         ]);
 
         Video::create([
@@ -74,7 +74,7 @@ class DatabaseSeeder extends Seeder
             'lat'=>19.3871369,
             'long'=>-99.0666843,
             'size'=>1,
-            'ruta'=>"..",
+            'ruta'=>"pirate.mp4",
         ]);
 
         Video::create([
@@ -85,7 +85,7 @@ class DatabaseSeeder extends Seeder
             'lat'=>19.3847926,
             'long'=>-99.078404,
             'size'=>1,
-            'ruta'=>"..",
+            'ruta'=>"pirate.mp4",
         ]);
     }
 }

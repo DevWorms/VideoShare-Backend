@@ -37,7 +37,7 @@ $factory->define(App\Video::class, function (Faker\Generator $faker){
         'lat' => $faker->latitude,
         'long' => $faker->longitude,
         'size' => $faker->numberBetween(10000000,100000000),
-        'ruta' => $faker->url,
+        'ruta' => 'pirate.mp4',
     ];
 
 });

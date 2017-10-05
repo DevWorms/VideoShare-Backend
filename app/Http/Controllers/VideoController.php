@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\traits\LocationTriat;
+use App\traits\VideoTrait;
 use App\User;
 use App\Video;
 use Carbon\Carbon;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 class VideoController extends Controller
 {
 
-    use LocationTriat;
+    use LocationTriat, VideoTrait;
     private $extensions;
     private $size;
     private $distance;
@@ -33,6 +34,18 @@ class VideoController extends Controller
             "h263", "h264", "mp4", "mov", "m4v",
             "mp3", "mpg", "mp4v", "avi", "wmv", "mkv",
         ];
+    }
+
+    public function resetVideos() {
+        $videos = Video::all();
+        $now = Carbon::now();
+
+        foreach ($videos as $video) {
+            $video->created_at = $now;
+            $video->save();
+        }
+
+        return response()->json(['status' => 1, 'mensaje' => 'Videos actualizados'], 200);
     }
 
     public function video(Request $request)
@@ -275,34 +288,5 @@ class VideoController extends Controller
             $res['mensaje'] = $error->getMessage() . $error->getLine() . $error->getFile();
             return response()->json($res, 500);
         }
-    }
-
-    public function returnVideo(Video $video)
-    {
-        $url = $video->ruta;
-        $video->url = url(Storage::url($url));
-
-        return $video;
-    }
-
-    public function returnFullVideo(Video $video)
-    {
-        $url = $video->ruta;
-        $video->url = url(Storage::url($url));
-        $users = [];
-        $usersBlacklist = [];
-
-        foreach ($video->videosCercanos as $videoCercano) {
-            $videoCercano = $this->returnVideo($videoCercano);
-            if (!in_array($videoCercano->usuario->id, $usersBlacklist)) {
-                if (count($users) < 3) {
-                    array_push($usersBlacklist, $videoCercano->usuario->id);
-                    array_push($users, $videoCercano->usuario);
-                }
-            }
-        }
-
-        $video->users = $users;
-        return $video;
     }
 }

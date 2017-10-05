@@ -6,3 +6,7 @@ Route::post("video", "VideoController@video");
 Route::post("users", "UserController@users");
 Route::post("videos", "VideoController@allvideos");
 Route::post("videos/{video_id}", "VideoController@videos5Metros");
+
+if (app()->environment('local') || app()->environment('stagging')) {
+    Route::post('/videos/reset', 'VideoController@resetVideos');
+}
