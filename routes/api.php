@@ -8,5 +8,5 @@ Route::post("videos", "VideoController@allvideos");
 Route::post("videos/{video_id}", "VideoController@videos5Metros");
 
 if (app()->environment('local') || app()->environment('stagging')) {
-    Route::post('/videos/reset', 'VideoController@resetVideos');
+    Route::get('/videos/reset', 'VideoController@resetVideos');
 }
