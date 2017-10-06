@@ -97,39 +97,7 @@ class UserController extends Controller
                 $user = User::where([
                     'id' => $request->get('id'),
                     'apikey' => $request->get("apikey"),
-                ])->with("videos")->firstOrFail();
-
-                $allVideos = collect();
-                $blacklist = [];
-
-                for ($i = 0; $i < count($user->videos); $i++) {
-                    if (!in_array($i, $blacklist)) {
-                        $videoParent = $user->videos->get($i);
-                        $videosCercanos = collect();
-
-                        for ($j = $i + 1; $j < count($user->videos); $j++) {
-                            $distance = ($videoParent["distance"] - $user->videos->get($j)["distance"]);
-
-                            if ($distance < 0) {
-                                $distance = $distance * -1;
-                            }
-
-                            if ($distance <= $this->distance10Metros) {
-                                $videosCercanos->push($user->videos->get($j));
-                                array_push($blacklist, $j);
-                            }
-                        }
-
-                        $videoParent["videosCercanos"] = $videosCercanos->values();
-                        $allVideos->push($videoParent);
-                    }
-                }
-
-                foreach ($allVideos as $video) {
-                    $video = $this->returnVideo($video);
-                }
-
-                $user->videos = $allVideos;
+                ])->firstOrFail();
 
                 $res ['estado'] = 1;
                 $res ['user'] = $user;

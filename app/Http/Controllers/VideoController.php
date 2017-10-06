@@ -157,7 +157,6 @@ class VideoController extends Controller
                                ) + sin( radians(?) ) *
                                sin( radians( `lat` ) ) )
                              ) AS distance', [$lat, $long, $lat])
-                //->havingRaw("distance < ?", [$this->distance10Metros])
                 ->with(['usuario' => function ($query) {
                     $query->select('id', 'name', 'url_img');
                 }])
@@ -211,8 +210,7 @@ class VideoController extends Controller
             $horamin = Carbon::now()->subHour($this->timeLimit);
 
             if ($lat == null || $long == null) {
-                $videos = Video::where('user_id', '!=', $request->get("id"))
-                    ->where('created_at', '>=', $horamin)
+                $videos = Video::where('created_at', '>=', $horamin)
                     ->selectRaw('*, ( 6371 * acos( cos( radians(?) ) *
                                cos( radians( `lat` ) )
                                * cos( radians( `long` ) - radians(?)
@@ -227,8 +225,7 @@ class VideoController extends Controller
             } else {
                 $boundaries = $this->getBoundaries($lat, $long);
 
-                $videos = Video::where('user_id', '!=', $request->get("id"))
-                    ->where('created_at', '>=', $horamin)
+                $videos = Video::where('created_at', '>=', $horamin)
                     ->whereBetween('lat', [$boundaries['min_lat'], $boundaries['max_lat']])
                     ->whereBetween('long', [$boundaries['min_lng'], $boundaries['max_lng']])
                     ->selectRaw('*, ( 6371 * acos( cos( radians(?) ) *
