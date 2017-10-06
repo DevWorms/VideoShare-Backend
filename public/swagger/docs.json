@@ -294,6 +294,31 @@
           }
         }
       }
+    },
+    "/videos/reset": {
+      "get": {
+        "tags": [
+          "videos"
+        ],
+        "summary": "Videos Reset",
+        "description": "Resetea la fecha de todos los videos en la BD, para eliminar el limite de 3 horas",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
     }
   }
 }
