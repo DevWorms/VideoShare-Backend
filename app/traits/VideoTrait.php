@@ -18,6 +18,13 @@ trait VideoTrait {
         $url = $video->ruta;
         $video->url = url(Storage::url($url));
 
+        $url_thumbnail = $video->thumbnail;
+        if ($url_thumbnail != null) {
+            $video->url_thumbnail = url(Storage::url($url_thumbnail));
+        } else {
+            $video->url_thumbnail = "";
+        }
+
         return $video;
     }
 
@@ -25,6 +32,14 @@ trait VideoTrait {
     {
         $url = $video->ruta;
         $video->url = url(Storage::url($url));
+
+        $url_thumbnail = $video->thumbnail;
+        if ($url_thumbnail != null) {
+            $video->url_thumbnail = url(Storage::url($url_thumbnail));
+        } else {
+            $video->url_thumbnail = "";
+        }
+
         $users = [];
         $usersBlacklist = [];
 

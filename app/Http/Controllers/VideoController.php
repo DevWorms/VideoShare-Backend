@@ -18,6 +18,7 @@ class VideoController extends Controller
 
     use LocationTriat, VideoTrait;
     private $extensions;
+    private $extensions_thumbnail;
     private $size;
     private $distance;
     private $distance10Metros;
@@ -33,6 +34,9 @@ class VideoController extends Controller
             // extensiones de video
             "h263", "h264", "mp4", "mov", "m4v",
             "mp3", "mpg", "mp4v", "avi", "wmv", "mkv",
+        ];
+        $this->extensions_thumbnail = [
+            "png", "jpg", "jpeg"
         ];
     }
 
@@ -68,6 +72,8 @@ class VideoController extends Controller
 
             $user = User::where(['id' => $request->get('id'), 'apikey' => $request->get("apikey")])->firstOrfail();
             $video = $request->file("archivo");
+            $thumbnail = $request->file("thumbnail");
+            $thumbnail_file = null;
             //$validator = Validator::make(['file' => $video], ['file' => 'required']);
             // Si el archivo tiene extensión valida
             if ($video != null) {
@@ -77,6 +83,16 @@ class VideoController extends Controller
                     $response['mensaje'] = "El video excede el límite de 100mb";
                     return response()->json($response, 400);
                 } else {
+                    if ($thumbnail != null) {
+                        $extension = strtolower($thumbnail->getClientOriginalExtension());
+
+                        if (in_array($extension, $this->extensions_thumbnail)) {
+                            // Si va bien, lo mueve a la carpeta y guarda el registro
+                            $thumbnail_file = $thumbnail->storeAs("/", uniqid() . '.' . $extension);
+                        } else {
+                            return response()->json(['estado' => 0, 'mensaje' => 'Tipo de archivo no permitido: ' . $extension], 400);
+                        }
+                    }
                     $extension = strtolower($video->getClientOriginalExtension());
 
                     if (in_array($extension, $this->extensions)) {
@@ -97,6 +113,7 @@ class VideoController extends Controller
                             'long' => $long,
                             'size' => $size,
                             'ruta' => $url,
+                            'thumbnail' => $thumbnail_file,
                         ]);
 
                         $res ['estado'] = 1;

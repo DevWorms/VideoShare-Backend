@@ -23,6 +23,7 @@ class CreateVideosTable extends Migration
             $table->string("long");
             $table->bigInteger("size");
             $table->string("ruta", 255);
+            $table->string('thumbnail', 255)->default("splash.png");
             $table->timestamps();
 
         });
