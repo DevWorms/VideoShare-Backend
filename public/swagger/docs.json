@@ -169,6 +169,13 @@
             "type": "file"
           },
           {
+            "name": "thumbnail",
+            "in": "formData",
+            "description": "Thumbnail del video, formatos validos: jpg, jpeg y png",
+            "required": false,
+            "type": "file"
+          },
+          {
             "name": "lat",
             "in": "formData",
             "description": "latitud del usuario",
